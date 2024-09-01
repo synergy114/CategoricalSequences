@@ -1,0 +1,55 @@
+---
+title: "Synthetic Clickstream Mixture"
+author: "Shakhnoza Takhirova"
+date: "2024-07-11"
+output: html_document
+---
+
+```{r}
+library(Rcpp)
+setwd("~/Documents/ClickstreamMixtures")
+#library(microbenchmark)
+```
+
+```{r}
+sourceCpp('MixtureSyntheticData.cpp')
+```
+
+```{r}
+# Example usage
+set.seed(123)
+nSequences <- 50
+sequenceLengthMax <- 25
+sequenceLengthMin <- 20
+nClusters <- 3
+nCategories <- 3
+
+# Create example transition matrices
+transitionMatrices <- list()
+for (i in 1:nClusters) {
+  transitionMatrix <- matrix(runif(nCategories * nCategories), nCategories, nCategories)
+  transitionMatrix <- transitionMatrix / rowSums(transitionMatrix)
+  transitionMatrices[[i]] <- round(transitionMatrix,2)
+}
+print('Transition Matrices')
+print(transitionMatrices)
+# Create initial probabilities for each cluster
+initialProbabilities <- matrix(runif(nClusters * nCategories), nClusters, nCategories)
+initialProbabilities <- initialProbabilities / rowSums(initialProbabilities)
+
+mixing_prob <- c(0.4, 0.2, 0.4)
+
+syntheticData <- generateSyntheticData(nSequences, sequenceLengthMin, sequenceLengthMax, nClusters, mixing_prob, transitionMatrices, initialProbabilities)
+#print(syntheticData)
+
+syntheticData$sequences<- RandomImputeList(syntheticData$sequences, .15)
+print(syntheticData)
+```
+
+
+```{r}
+typeof(syntheticData$sequences)
+```
+
+
+

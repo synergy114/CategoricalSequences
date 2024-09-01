@@ -1,0 +1,120 @@
+---
+title: "CompleteImputeSeqNA v3"
+author: "Shakhnoza Takhirova"
+date: "2024-07-01"
+output: html_document
+---
+
+```{r }
+library(Rcpp)
+#library(RcppArmadillo)
+setwd("~/Documents/ClickstreamMixtures")
+library(microbenchmark)
+```
+
+```{r}
+sourceCpp('SynData.cpp')
+sourceCpp('CompleteImputeV3.cpp')
+```
+
+# Experiments
+
+## 2 category
+
+### Data points 50, T<=50, Missing values 15%
+
+```{r }
+set.seed(0)
+transition_matrix_binary <- matrix(c(
+  0.8, 0.2,  # From State 1 to State 1, From State 1 to State 2
+  0.4, 0.6   # From State 2 to State 1, From State 2 to State 2
+), nrow = 2, byrow = TRUE)
+
+vectorized_seq=GenSeq_with_NA(num_sequences = 40, length_sequences = 30, transition_matrix = transition_matrix_binary, impute_prob =.15)
+emp_prob_binary=EmpiricProb(vectorized_seq,2)
+```
+
+#### Imputation
+
+
+```{r}
+# Example usage:
+pt <- proc.time()
+result <- AllSeqJointImputeR(vectorized_seq, emp_prob_binary, transition_matrix_binary, num_sim=100)
+print(proc.time() - pt)
+```
+
+```{r}
+result[[17]]
+```
+```{r}
+pt <- proc.time()
+result <- AllSeqJointImputeRCPP(vectorized_seq, emp_prob_binary, transition_matrix_binary, num_sim=100)
+print(proc.time() - pt)
+```
+
+
+### Computational cost of RCPP vs R based function to apply SeqJOintImpute on all sequences
+
+```{r}
+mb <- microbenchmark(
+  AllSeqJointImputeR(vectorized_seq, emp_prob_binary, transition_matrix_binary, num_sim = 100),
+  AllSeqJointImputeRCPP(vectorized_seq, emp_prob_binary, transition_matrix_binary, num_sim = 100),
+  times = 100
+)
+
+# Print the results
+print(mb)
+
+```
+
+
+
+
+## 3 categories
+
+### Data points 40, T<=40, Missing values 15%
+
+```{r }
+
+transition_matrix <- matrix(c(0.1, 0.6, 0.3,
+                           0.7, 0, 0.3,
+                           0.2, 0.2, 0.6), 
+                       nrow = 3, byrow = TRUE)
+# num_sim <- 100
+
+```
+
+
+```{r}
+seq=GenSeq_with_NA(num_sequences=40,  length_sequences = 40, transition_matrix = transition_matrix, impute_prob =.15)
+```
+
+```{r}
+emp_prob=EmpiricProb(seq,3)
+emp_prob
+```
+
+
+```{r}
+pt <- proc.time()
+result <- AllSeqJointImputeRCPP(seq, emp_prob, transition_matrix, num_sim=100)
+print(proc.time() - pt)
+```
+```{r}
+result[[1]]
+```
+
+
+```{r}
+# Measure the execution time of both functions
+mb3 <- microbenchmark(
+  AllSeqJointImputeR(seq, emp_prob, transition_matrix, num_sim = 100),
+  AllSeqJointImputeRCPP(seq, emp_prob, transition_matrix, num_sim = 100),
+  times = 100
+)
+
+# Print the results
+print(mb3)
+```
+
