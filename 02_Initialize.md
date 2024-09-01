@@ -1,4 +1,4 @@
-# Hidden Markov Model (HMM) Rcpp Package
+#  Random Initialize
 
 ## Overview
 
