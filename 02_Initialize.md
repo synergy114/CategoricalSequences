@@ -2,8 +2,8 @@
 
 ## Overview
 
-This Rcpp package provides functions for initializing parameters for a
-Hidden Markov Model (HMM). The functions include:
+These functions are for initializing parameters for a
+Mixed Markov Model. The functions include:
 
 -   **InitializeClusters**: Initializes cluster assignments randomly.
 -   **filterSequencesByCluster**: Extracts sequences for each cluster.
