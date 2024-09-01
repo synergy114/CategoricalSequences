@@ -14,7 +14,7 @@ List FindMissingGroups(IntegerVector x) {
   IntegerVector current_slots;
   
   // Finding missing positions
-  for (int i = 0; i < (n+1); i++) {
+  for (int i = 0; i < n; i++) {
     if (!IntegerVector::is_na(x[i])) {
       if (current_slots.size() > 0) {
         missing_positions.push_back(current_slots);
@@ -153,7 +153,8 @@ List GroupRandomWalk(IntegerVector x, IntegerVector missing_positions, NumericVe
 List ImputeOneSequence(IntegerVector x, NumericVector initial_prob, NumericMatrix transition_matrix, int num_sim) {
   List one_seq_imputes;
   List missing_groups = FindMissingGroups(x);
-  
+  // Debugging print for missing groups
+  //Rcpp::Rcout << "Missing groups: " << missing_groups << std::endl;
   for (int i = 0; i < missing_groups.size(); i++) {
     IntegerVector group = missing_groups[i];
     //int group_len = group.size();
