@@ -1,0 +1,26 @@
+{
+    "id": "0C15EA4E",
+    "path": "~/Documents/CategoricalSequences/src/06_RNG_Init.cpp",
+    "project_path": "06_RNG_Init.cpp",
+    "type": "cpp",
+    "hash": "0",
+    "contents": "",
+    "dirty": false,
+    "created": 1727828559219.0,
+    "source_on_save": true,
+    "relative_order": 5,
+    "properties": {
+        "source_window_id": "",
+        "Source": "Source",
+        "cursorPosition": "45,4",
+        "scrollLine": "0"
+    },
+    "folds": "3|78|12|0|\n15|76|41|0|\n",
+    "lastKnownWriteTime": 1728734169,
+    "encoding": "UTF-8",
+    "collab_server": "",
+    "source_window": "",
+    "last_content_update": 1728734169652,
+    "read_only": false,
+    "read_only_alternatives": []
+}
