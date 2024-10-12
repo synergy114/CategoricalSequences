@@ -1,5 +1,4 @@
-#include <Rcpp.h>
-using namespace Rcpp;
+#include "01_SyntheticMixtureData.h"
 
 // Function to generate a single Markov sequence
 IntegerVector generateMarkovSequence(int length, NumericMatrix transitionMatrix, int initialState) {

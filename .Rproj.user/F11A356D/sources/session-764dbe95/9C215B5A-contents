@@ -46,7 +46,7 @@ print(transitionMatrices)
 initialProbabilities <- matrix(runif(nClusters * nCategories), nClusters, nCategories)
 initialProbabilities <- initialProbabilities / rowSums(initialProbabilities)
 
-mixing_prob <- c(0.4, 0.2, 0.4)
+mixing_prob <- c(0.6, 0.2, 0.2)
 
 syntheticData <- generateSyntheticData(nSequences, sequenceLengthMin, sequenceLengthMax, nClusters, mixing_prob, transitionMatrices, initialProbabilities)
 #print(syntheticData)
