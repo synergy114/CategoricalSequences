@@ -6,16 +6,7 @@
 //Function to find missing positions for the given sequence which groups the sequential NAs returns list of vectors. each vector is for 
 // the cluster of NAs
 
-// [[Rcpp::export]]
-arma::vec SumWeightedVectors(arma::vec weights, std::vector<arma::vec> vectors) {
-  arma::vec result = weights[0] * vectors[0];  // Initialize with first weighted vector
-  
-  for (std::size_t k = 1; k < weights.n_elem; k++) {
-    result += weights[k] * vectors[k];
-  }
-  
-  return result;
-}
+
 
 List FindMissingGroups(IntegerVector y) {
   int n = y.size();
@@ -264,7 +255,7 @@ List AllSeqJointImputePi(List seq_list, List current_params,List all_imputes, Li
   int n = seq_list.size();
   List results(n);
   
-  NumericMatrix alpha = current_params["alpha"];
+  arma::mat& alpha = current_params["alpha"];
   List Gamma = current_params["gamma"];
   
   int K=alpha.nrow();
@@ -278,7 +269,7 @@ List AllSeqJointImputePi(List seq_list, List current_params,List all_imputes, Li
     arma::vec weights=pi_i*Pu;
     
     
-    NumericMatrix transition_matrix=SumWeightedMatrices(weights,Gamma);
+    arma::mat transition_matrix=matrix*weights.t();
     NumericVector initial_prob=SumWeightedVectors(weights,alpha); 
     
     List result = SeqJointImpute(seq, initial_prob, transition_matrix, num_sim);

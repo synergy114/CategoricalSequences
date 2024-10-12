@@ -1,8 +1,7 @@
 #ifndef EM_STEP_H
 #define EM_STEP_H
 
-#include <RcppArmadillo.h>
-// [[Rcpp::depends(RcppArmadillo)]]
+#include <Rcpp.h>
 #include "04_TransitionsCount.h"
 
 using namespace Rcpp;

@@ -6,28 +6,19 @@ void debug_print(std::string msg, int value) {
   Rcpp::Rcout << msg << ": " << value << std::endl;
 }
 
-// // [[Rcpp::export]]
-// NumericVector SumWeightedVectors(NumericVector weights, NumericMatrix matrix){
-//   int n=weights.size();
-//   int m = matrix.ncol();  // Get the number of columns in the matrix
-//   
-//   NumericVector weighted_vector(m);
-//   for (int i=0; i<n; i++){
-//     weighted_vector += weights[i] * matrix(i, _);
-//   }
-//   return weighted_vector;
-// }
-
 // [[Rcpp::export]]
-arma::vec SumWeightedVectors(arma::vec weights, std::vector<arma::vec> vectors) {
-  arma::vec result = weights[0] * vectors[0];  // Initialize with first weighted vector
-  
-  for (std::size_t k = 1; k < weights.n_elem; k++) {
-    result += weights[k] * vectors[k];
+NumericVector SumWeightedVectors(NumericVector weights, NumericMatrix matrix){
+  int n=weights.size();
+  int m = matrix.ncol();  // Get the number of columns in the matrix
+
+  NumericVector weighted_vector(m);
+  for (int i=0; i<n; i++){
+    weighted_vector += weights[i] * matrix(i, _);
   }
-  
-  return result;
+  return weighted_vector;
 }
+
+
 
 // [[Rcpp::export]]
 NumericMatrix SumWeightedMatrices(NumericVector weights, List matrix_list) {
